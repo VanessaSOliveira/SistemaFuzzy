@@ -1,13 +1,5 @@
 /*
-	Example: A tip calculation FIS (fuzzy inference system)
-	Calculates tip based on 'servie' and 'food'
-
-	If you want to about this example (and fuzzy logic), please 
-	read Matlab's tutorial on fuzzy logic toolbox 
-	http://www.mathworks.com/access/helpdesk/help/pdf_doc/fuzzy/fuzzy.pdf
-
-									Pablo Cingolani 
-									pcingola@users.sourceforge.net
+	Arquivo FCL do projeto 3 da disciplina Inteligencia Artificial
 */
 
 FUNCTION_BLOCK cannon	// Block definition (there may be more than one block per file)
@@ -23,31 +15,31 @@ VAR_OUTPUT				// Define output variable
 END_VAR
 
 FUZZIFY dx		// Fuzzify input variable 'dx': {'muitoPerto', 'perto', 'longe' , 'muitoLonge'}
-	TERM muitoPerto := (0, 1) (50, 1) (75,0) ; 
-	TERM perto := (70, 0) (100,1) (130,0);
-	TERM longe := (125, 0) (150, 1) (180,0);
-	TERM muitoLonge := (175, 0) (200, 1);
+	TERM muitoPerto := (0, 1) (25, 1) (62.5,0) ; 
+	TERM perto := (37.5, 0) (75,1) (112.5,0);
+	TERM longe := (87.5, 0) (125, 1) (162.5,0);
+	TERM muitoLonge := (137.5, 0) (175,1) (200, 1);
 END_FUZZIFY
 
 FUZZIFY dy			// Fuzzify input variable 'dy': { 'muitoBaixo', 'baixo', 'alto', 'muitoAlto' }
-	TERM muitoBaixo := (0, 1) (25, 1) (37.5,0) ;
-	TERM baixo := (35,0) (50,1) (62.5,0);
-	TERM alto := (60,0) (75,1) (87.5,0);
-	TERM muitoAlto := (85,0) (100,1);
+	TERM muitoBaixo := (0, 1) (12.5, 1) (31.2,0) ;
+	TERM baixo := (18.7,0) (37.5,1) (56.2,0);
+	TERM alto := (43.7,0) (62.5,1) (81.2,0);
+	TERM muitoAlto := (68.7,0) (87.5,1) (100,1);
 END_FUZZIFY
 
 DEFUZZIFY Velocidade			// Defuzzify output variable 'velocidade' : {'lenta', 'normal', 'rapida' }
-	TERM lenta := (0,1) (20,1) (30,0);
-	TERM normal := (27,0) (40,1) (60,0);
-	TERM rapida := (57,0) (70,1) (80,1);
+	TERM lenta := (0,1) (15,1) (37.5,0);
+	TERM normal := (22.5,0) (45,1) (67.5,0);
+	TERM rapida := (52.5,0) (75,1) (90,1);
 	METHOD : COG;		// Use 'Center Of Gravity' defuzzification method
 	DEFAULT := 0;		// Default value is 0 (if no rule activates defuzzifier)
 END_DEFUZZIFY
 
 DEFUZZIFY Angulo			// Defuzzify output variable 'angulo' : {'fechado', 'medio', 'aberto' }
-	TERM fechado := (0,1) (22.5,1) (34,0);
-	TERM medio := (32,0) (45,1) (67.5,0);
-	TERM aberto := (65.5,0) (79,1) (90,1);
+	TERM fechado := (0,1) (15,1) (37.5,0);
+	TERM medio := (22.5,0) (45,1) (67.5,0);
+	TERM aberto := (52.5,0) (75,1) (90,1);
 	METHOD : COG;		// Use 'Center Of Gravity' defuzzification method
 	DEFAULT := 0;		// Default value is 0 (if no rule activates defuzzifier)
 END_DEFUZZIFY
