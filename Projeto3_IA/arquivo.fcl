@@ -49,10 +49,12 @@ RULEBLOCK No1
 	ACT : MIN;			// Use 'min' activation method
 	ACCU : MAX;			// Use 'max' accumulation method
 
-	RULE 1 : IF dx IS muitoPerto OR dy IS muitoBaixo THEN Velocidade IS normal;
-	RULE 2 : IF dx IS muitoLonge THEN Velocidade IS lenta; 
-	RULE 3 : IF dy IS muitoAlto THEN Angulo IS fechado;
-	RULE 3 : IF dx IS perto AND dy IS alto THEN Angulo IS fechado;
+	RULE 1 : IF dx IS muitoPerto THEN Velocidade IS lenta;
+	RULE 2 : IF dx IS perto OR dx IS longe THEN Velocidade IS normal; 
+	RULE 3 : IF dx IS muitoLonge THEN Velocidade IS rapida;
+	RULE 4 : IF dy IS muitoAlto THEN Angulo IS fechado;
+	RULE 5 : IF dy IS alto OR dy IS baixo THEN Angulo IS medio;
+	RULE 6 : IF dy IS muitoBaixo THEN Angulo IS aberto;
 END_RULEBLOCK
 
 END_FUNCTION_BLOCK
