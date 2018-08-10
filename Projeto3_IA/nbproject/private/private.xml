@@ -2,6 +2,15 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+<<<<<<< HEAD
         <group/>
+=======
+        <group>
+            <file>file:/C:/Users/vanessa/Documents/GitHub/SistemaFuzzy/Projeto3_IA/src/projeto3_ia/Projeto3_IA.java</file>
+            <file>file:/C:/Users/vanessa/Documents/GitHub/SistemaFuzzy/Projeto3_IA/src/projeto3_ia/TestArquivo.java</file>
+            <file>file:/C:/Users/vanessa/Documents/GitHub/SistemaFuzzy/Projeto3_IA/src/projeto3_ia/Fuzzy.java</file>
+            <file>file:/C:/Users/vanessa/Documents/GitHub/SistemaFuzzy/Projeto3_IA/src/projeto3_ia/Sistema.java</file>
+        </group>
+>>>>>>> b40b4b30ad53deb033647872f02c1b9c016f136f
     </open-files>
 </project-private>
