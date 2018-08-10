@@ -93,8 +93,9 @@ public class Sistema {
     }
     
     public void entradas(double angulo, double velocidade){
-        this.angulo = this.angulo + angulo;
-        this.velocidade = this.velocidade + velocidade;
+            this.angulo = this.angulo + angulo;
+            this.velocidade = this.velocidade + velocidade;
+           
         /*
         this.angulo = angulo;
         this.velocidade = velocidade;*/
