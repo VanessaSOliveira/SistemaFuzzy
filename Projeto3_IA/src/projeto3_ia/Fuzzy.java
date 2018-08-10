@@ -64,9 +64,16 @@ public class Fuzzy {
     
     public static void main(String[] args){
         Fuzzy fuzzy = new Fuzzy();
-        fuzzy.calculaVelocidadeEAngulo(100.0, 30.0);
+        fuzzy.calculaVelocidadeEAngulo(20.0, 2.0);
         System.out.println("Velocidade igual a : " + fuzzy.getVelocidade());
         System.out.println("Angulo igual a : " + fuzzy.getAngulo());
+        
+        fuzzy.calculaVelocidadeEAngulo(2.0, 5.0);
+        System.out.println("Velocidade igual a : " + fuzzy.getVelocidade());
+        System.out.println("Angulo igual a : " + fuzzy.getAngulo());
+        
+        
+        
         
     }
     

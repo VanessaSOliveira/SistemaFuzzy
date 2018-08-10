@@ -15,31 +15,55 @@ VAR_OUTPUT				// Define output variable
 END_VAR
 
 FUZZIFY dx		// Fuzzify input variable 'dx': {'muitoPerto', 'perto', 'longe' , 'muitoLonge'}
-	TERM muitoPerto := (0, 1) (25, 1) (62.5,0) ; 
-	TERM perto := (37.5, 0) (75,1) (112.5,0);
-	TERM longe := (87.5, 0) (125, 1) (162.5,0);
-	TERM muitoLonge := (137.5, 0) (175,1) (200, 1);
+	TERM muitoPertoAntes := (-5, 0) (-3, 1) (0, 1); 
+	TERM pertoAntes := (-10, 0) (-6.5, 1) (-3, 0);
+	TERM longeAntes := (-30, 0) (-19, 1) (-8,0);
+	TERM muitoLongeAntes := (-50, 1) (-40, 1) (-25, 0);
+
+	TERM muitoPertoDepois := (0, 1) (3, 1) (5,0) ; 
+	TERM pertoDepois := (3, 0) (6.5, 1) (10,0);
+	TERM longeDepois := (8, 0) (19, 1) (30,0);
+	TERM muitoLongeDepois := (25, 0) (40, 1) (50, 1);
 END_FUZZIFY
 
 FUZZIFY dy			// Fuzzify input variable 'dy': { 'muitoBaixo', 'baixo', 'alto', 'muitoAlto' }
-	TERM muitoBaixo := (0, 1) (12.5, 1) (31.2,0) ;
-	TERM baixo := (18.7,0) (37.5,1) (56.2,0);
-	TERM alto := (43.7,0) (62.5,1) (81.2,0);
-	TERM muitoAlto := (68.7,0) (87.5,1) (100,1);
+	TERM muitoLongeAbaixo := (-22, 1) (-10, 1) (-8,0); 
+	TERM longeAbaixo := (-10, 0) (-6.5, 1) (-3, 0);
+	TERM pertoAbaixo := (-3.5, 0) (-2.5, 1) (-1.5, 0);
+	TERM muitoPertoAbaixo := (-2, 0) (-1, 1) (0, 1);
+
+	TERM muitoPertoAcima := (0, 1) (1, 1) (2,0) ; 
+	TERM pertoAcima := (1.5, 0) (2.5, 1) (3.5, 0);
+	TERM longeAcima := (3, 0) (6.5, 1) (10, 0);
+	TERM muitoLongeAcima := (8, 0) (10, 1) (22, 1);
 END_FUZZIFY
 
 DEFUZZIFY Velocidade			// Defuzzify output variable 'velocidade' : {'lenta', 'normal', 'rapida' }
-	TERM lenta := (0,1) (15,1) (37.5,0);
-	TERM normal := (22.5,0) (45,1) (67.5,0);
-	TERM rapida := (52.5,0) (75,1) (90,1);
+	TERM diminuiMuitoMuito := (-10,1) (-8,1) (-7,0);
+	TERM diminuiMuito := (-8,0) (-6, 1) (-4, 0);
+	TERM diminuiPouco := (-5, 0) (-3.5, 1) (-2, 0);
+	TERM diminuiMuitoPouco := (-3, 0) (-2, 1) (0, 1);
+
+	TERM aumentaMuitoPouco := (0, 1) (2, 1) (3, 0);
+	TERM aumentaPouco := (2,0) (3.5, 1) (5, 0);
+	TERM aumentaMuito := (4, 0) (6, 1) (8, 0);
+	TERM aumentaMuitoMuito := (7, 0) (8, 1) (10, 1);
+	
 	METHOD : COG;		// Use 'Center Of Gravity' defuzzification method
 	DEFAULT := 0;		// Default value is 0 (if no rule activates defuzzifier)
 END_DEFUZZIFY
 
 DEFUZZIFY Angulo			// Defuzzify output variable 'angulo' : {'fechado', 'medio', 'aberto' }
-	TERM fechado := (0,1) (15,1) (37.5,0);
-	TERM medio := (22.5,0) (45,1) (67.5,0);
-	TERM aberto := (52.5,0) (75,1) (90,1);
+	TERM fechaMuitoMuito := (-20,1) (-10,1) (-9,0);
+	TERM fechaMuito := (-10,0) (-7.5,1) (-5,0);
+	TERM fechaPouco := (-6,0) (-3.5,1) (-1,0);
+	TERM fechaMuitoPouco := (-2,0) (-1,1) (0,1);
+
+	TERM abreMuitoPouco := (0,1) (1,1) (2,0);
+	TERM abrePouco := (1,0) (3.5,1) (6,1);
+	TERM abreMuito := (5,0) (7.5,1) (10,0);
+	TERM abreMuitoMuito := (9,0) (10,1) (20,1);
+	
 	METHOD : COG;		// Use 'Center Of Gravity' defuzzification method
 	DEFAULT := 0;		// Default value is 0 (if no rule activates defuzzifier)
 END_DEFUZZIFY
@@ -49,12 +73,12 @@ RULEBLOCK No1
 	ACT : MIN;			// Use 'min' activation method
 	ACCU : MAX;			// Use 'max' accumulation method
 
-	RULE 1 : IF dx IS muitoPerto THEN Velocidade IS lenta;
-	RULE 2 : IF dx IS perto OR dx IS longe THEN Velocidade IS normal; 
-	RULE 3 : IF dx IS muitoLonge THEN Velocidade IS rapida;
-	RULE 4 : IF dy IS muitoAlto THEN Angulo IS fechado;
-	RULE 5 : IF dy IS alto OR dy IS baixo THEN Angulo IS medio;
-	RULE 6 : IF dy IS muitoBaixo THEN Angulo IS aberto;
+	RULE 1 : IF dx IS muitoPertoAntes THEN Velocidade IS aumentaMuito;
+	RULE 2 : IF dx IS pertoAntes THEN Velocidade IS aumentaMuitoPouco; 
+	RULE 3 : IF dx IS muitoLongeAntes THEN Velocidade IS aumentaMuitoMuito;
+	RULE 4 : IF dy IS muitoLongeAcima THEN Angulo IS fechaMuito;
+	RULE 5 : IF dy IS longeAcima THEN Angulo IS fechaPouco;
+	RULE 6 : IF dy IS muitoLongeAbaixo THEN Angulo IS abreMuitoMuito;
 END_RULEBLOCK
 
 END_FUNCTION_BLOCK
