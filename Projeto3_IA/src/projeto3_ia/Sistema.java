@@ -84,17 +84,20 @@ public class Sistema {
     private int Xr, Yr, Xa, Ya, Yc;
     private double angulo, velocidade;
     
-    public Sistema(double anguloInicial, double velocidadeInicial, int Yc, int Xa, int Ya){
-        this.angulo = anguloInicial;
-        this.velocidade = velocidadeInicial;
+    public Sistema(int Yc, int Xa, int Ya){
+        this.angulo = 0;
+        this.velocidade=0;
         this.Yc = Yc;
         this.Xa=Xa;
         this.Ya=Ya;
     }
     
     public void entradas(double angulo, double velocidade){
+        this.angulo = this.angulo + angulo;
+        this.velocidade = this.velocidade + velocidade;
+        /*
         this.angulo = angulo;
-        this.velocidade = velocidade;
+        this.velocidade = velocidade;*/
     }
     
     private double calculaVelocidadeX(double velocidadeInicial, double angulo){
@@ -193,13 +196,14 @@ public class Sistema {
         return dy;
     }
 
-    public static void main(String[] args){
+   /* public static void main(String[] args){
         int velocidade=50, angulo=10, yc=1, xa= 2, ya=4;
-        Sistema s = new Sistema(angulo,velocidade,yc,xa,ya);
+        Sistema s = new Sistema(yc,xa,ya);
+        s.entradas(angulo, velocidade);
         Double dx = s.diferencaDx();
         Double dy = s.diferencaDy();
         System.out.println("Dx: " + dx + " Dy : " + dy);
-    }
+    }*/
 }
 
 
