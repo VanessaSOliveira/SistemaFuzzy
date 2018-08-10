@@ -56,7 +56,8 @@ public class Sistema {
     }
     
     public double calculaTempoY(int y, double Yc, double velocidadeY){
-        return Math.sqrt(2*(Yc - velocidadeY) / 9.8);
+        double var = 2.0*(Math.abs(Yc - velocidadeY)) / 9.8;
+        return Math.sqrt(var);
     }
     
     public int calculaXr(double tempo, double Yc, double velocidadeY){
