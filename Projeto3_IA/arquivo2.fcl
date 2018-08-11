@@ -1,0 +1,75 @@
+/*
+	Arquivo FCL do projeto 3 da disciplina Inteligencia Artificial
+*/
+
+FUNCTION_BLOCK cannon	// Block definition (there may be more than one block per file)
+
+VAR_INPUT				// Define input variables
+	dx : REAL;
+	dy : REAL;
+END_VAR
+
+VAR_OUTPUT				// Define output variable
+	Velocidade : REAL;
+	Angulo : REAL;
+END_VAR
+
+FUZZIFY dx		// Fuzzify input variable 'dx': {'muitoPerto', 'perto', 'longe' , 'muitoLonge'}
+	TERM pertoAntes := (-27, 0) (-13.5, 1) (0, 0); 
+	TERM longeAntes := (-50, 0) (-36.5, 1) (-23, 0);
+
+	TERM pertoDepois := (0, 0) (13.5, 1) (27,0) ; 
+	TERM longeDepois := (23, 0) (36.5, 1) (50, 0);
+END_FUZZIFY
+
+FUZZIFY dy			// Fuzzify input variable 'dy': { 'muitoBaixo', 'baixo', 'alto', 'muitoAlto' }
+	TERM longeAbaixo := (-22, 0) (-15.5, 1) (-9,0); 
+	TERM pertoAbaixo := (-13, 0) (-6.5, 1) (0, 0);
+
+	TERM pertoAcima := (0, 0) (6.5, 1) (13,0) ;
+	TERM longeAcima := (9, 0) (15.5, 1) (22, 0);
+END_FUZZIFY
+
+DEFUZZIFY Velocidade			// Defuzzify output variable 'velocidade' : {'lenta', 'normal', 'rapida' }
+	TERM diminuiMuito := (-10,0) (-7,1) (-4,0);
+	TERM diminuiPouco := (-6, 0) (-3, 1) (0, 0);
+
+	TERM aumentaPouco := (0, 0) (3, 1) (6, 0);
+	TERM aumentaMuito := (4, 0) (7, 1) (10, 0);
+	
+	METHOD : COG;		// Use 'Center Of Gravity' defuzzification method
+	DEFAULT := 0;		// Default value is 0 (if no rule activates defuzzifier)
+END_DEFUZZIFY
+
+DEFUZZIFY Angulo			// Defuzzify output variable 'angulo' : {'fechado', 'medio', 'aberto' }
+	TERM fechaMuito := (-20,0) (-14,1) (-8,0);
+	TERM fechaPouco := (-12,0) (-6,1) (0,0);
+
+	TERM abrePouco := (0,0) (6,1) (12,0);
+	TERM abreMuito := (8,0) (14,1) (20,0);
+	
+	METHOD : COG;		// Use 'Center Of Gravity' defuzzification method
+	DEFAULT := 0;		// Default value is 0 (if no rule activates defuzzifier)
+END_DEFUZZIFY
+
+RULEBLOCK No1
+	AND : MIN;			// Use 'min' for 'and' (also implicit use 'max' for 'or' to fulfill DeMorgan's Law)
+	ACT : MIN;			// Use 'min' activation method
+	ACCU : MAX;			// Use 'max' accumulation method
+
+	RULE 1 : IF dx IS longeDepois THEN Velocidade IS diminuiMuito;
+	RULE 4 : IF dx IS pertoDepois THEN Velocidade IS diminuiPouco;
+
+	RULE 5 : IF dx IS pertoAntes THEN Velocidade IS aumentaPouco; 
+	RULE 8 : IF dx IS longeAntes THEN Velocidade IS aumentaMuito;
+
+	RULE 9 : IF dy IS longeAcima THEN Angulo IS fechaMuito;
+	RULE 12 : IF dy IS pertoAcima THEN Angulo IS fechaPouco;
+
+	RULE 13 : IF dy IS pertoAbaixo THEN Angulo IS abrePouco;
+	RULE 16 : IF dy IS longeAbaixo THEN Angulo IS abreMuito;
+	
+	
+END_RULEBLOCK
+
+END_FUNCTION_BLOCK

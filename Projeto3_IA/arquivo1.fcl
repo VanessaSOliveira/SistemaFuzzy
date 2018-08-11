@@ -1,0 +1,87 @@
+/*
+	Arquivo FCL do projeto 3 da disciplina Inteligencia Artificial
+*/
+
+FUNCTION_BLOCK cannon	// Block definition (there may be more than one block per file)
+
+VAR_INPUT				// Define input variables
+	dx : REAL;
+	dy : REAL;
+END_VAR
+
+VAR_OUTPUT				// Define output variable
+	Velocidade : REAL;
+	Angulo : REAL;
+END_VAR
+
+FUZZIFY dx		// Fuzzify input variable 'dx': {'muitoPerto', 'perto', 'longe' , 'muitoLonge'}
+	TERM pertoAntes := (-22, 0) (-11, 1) (0, 0); 
+	TERM mediaAntes := (-30, 0) (-25, 1) (-20,0);
+	TERM longeAntes := (-50, 0) (-39, 1) (-28, 0);
+
+	TERM pertoDepois := (0, 0) (11, 1) (22,0) ; 
+	TERM mediaDepois := (20, 0) (25, 1) (30,0);
+	TERM longeDepois := (28, 0) (39, 1) (50, 0);
+END_FUZZIFY
+
+FUZZIFY dy			// Fuzzify input variable 'dy': { 'muitoBaixo', 'baixo', 'alto', 'muitoAlto' }
+	TERM longeAbaixo := (-22, 0) (-17.5, 1) (-13,0); 
+	TERM mediaAbaixo := (-15, 0) (-11, 1) (-7, 0);
+	TERM pertoAbaixo := (-9, 0) (-4.5, 1) (0, 0);
+
+	TERM pertoAcima := (0, 0) (4.5, 1) (9,0) ; 
+	TERM mediaAcima := (7, 0) (11, 1) (15, 0);
+	TERM longeAcima := (13, 0) (17.5, 1) (22, 0);
+END_FUZZIFY
+
+DEFUZZIFY Velocidade			// Defuzzify output variable 'velocidade' : {'lenta', 'normal', 'rapida' }
+	TERM diminuiMuito := (-10,0) (-8.5,1) (-7,0);
+	TERM diminuiMedio := (-8,0) (-5, 1) (-2, 0);
+	TERM diminuiPouco := (-3, 0) (-1.5, 1) (0, 0);
+
+	TERM aumentaPouco := (0, 0) (1.5, 1) (3, 0);
+	TERM aumentaMedio := (2, 0) (5, 1) (8, 0);
+	TERM aumentaMuito := (7, 0) (8.5, 1) (10, 0);
+	
+	METHOD : COG;		// Use 'Center Of Gravity' defuzzification method
+	DEFAULT := 0;		// Default value is 0 (if no rule activates defuzzifier)
+END_DEFUZZIFY
+
+DEFUZZIFY Angulo			// Defuzzify output variable 'angulo' : {'fechado', 'medio', 'aberto' }
+	TERM fechaMuito := (-20,0) (-16,1) (-12,0);
+	TERM fechaMedio := (-14,0) (-10,1) (-6,0);
+	TERM fechaPouco := (-8,0) (-4,1) (0,0);
+
+	TERM abrePouco := (0,0) (4,1) (8,0);
+	TERM abreMedio := (6,0) (10,1) (14,0);
+	TERM abreMuito := (12,0) (16,1) (20,0);
+	
+	METHOD : COG;		// Use 'Center Of Gravity' defuzzification method
+	DEFAULT := 0;		// Default value is 0 (if no rule activates defuzzifier)
+END_DEFUZZIFY
+
+RULEBLOCK No1
+	AND : MIN;			// Use 'min' for 'and' (also implicit use 'max' for 'or' to fulfill DeMorgan's Law)
+	ACT : MIN;			// Use 'min' activation method
+	ACCU : MAX;			// Use 'max' accumulation method
+
+	RULE 1 : IF dx IS longeDepois THEN Velocidade IS diminuiMuito;
+	RULE 2 : IF dx IS mediaDepois THEN Velocidade IS diminuiMedio; 
+	RULE 4 : IF dx IS pertoDepois THEN Velocidade IS diminuiPouco;
+
+	RULE 5 : IF dx IS pertoAntes THEN Velocidade IS aumentaPouco;
+	RULE 7 : IF dx IS mediaAntes THEN Velocidade IS aumentaMedio; 
+	RULE 8 : IF dx IS longeAntes THEN Velocidade IS aumentaMuito;
+
+	RULE 9 : IF dy IS longeAcima THEN Angulo IS fechaMuito;
+	RULE 10 : IF dy IS mediaAcima THEN Angulo IS fechaMedio; 
+	RULE 12 : IF dy IS pertoAcima THEN Angulo IS fechaPouco;
+
+	RULE 13 : IF dy IS pertoAbaixo THEN Angulo IS abrePouco;
+	RULE 15 : IF dy IS mediaAbaixo THEN Angulo IS abreMedio; 
+	RULE 16 : IF dy IS longeAbaixo THEN Angulo IS abreMuito;
+	
+	
+END_RULEBLOCK
+
+END_FUNCTION_BLOCK
