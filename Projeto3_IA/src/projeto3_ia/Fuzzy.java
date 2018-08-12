@@ -3,6 +3,8 @@ package projeto3_ia;
 
 import net.sourceforge.jFuzzyLogic.FIS;
 import net.sourceforge.jFuzzyLogic.FunctionBlock;
+import net.sourceforge.jFuzzyLogic.plot.JFuzzyChart;
+import net.sourceforge.jFuzzyLogic.rule.Variable;
 
 /**
  *
@@ -10,7 +12,7 @@ import net.sourceforge.jFuzzyLogic.FunctionBlock;
  */
 public class Fuzzy {
     //private Double dx, dy; // entradas
-    private Double velocidade, angulo;// saidas
+    private double velocidade, angulo;// saidas
     
     
     public Fuzzy(){
@@ -20,7 +22,7 @@ public class Fuzzy {
     
     //chama esse metodo e depois pega as saidas pelo get
     public void calculaVelocidadeEAngulo(Double dx, Double dy){
-        String filename = "arquivo.fcl";
+        String filename = "arquivo8.fcl";
         FIS fis = FIS.load(filename, true);
 
         if (fis == null) {
@@ -28,9 +30,13 @@ public class Fuzzy {
             System.exit(1);
 	}
 
+        
 	// Get default function block
 	FunctionBlock fb = fis.getFunctionBlock(null);
               ////////////n sei se ate essa parte tem q repetir toda vez 
+              
+              // Show 
+      //  JFuzzyChart.get().chart(fb);
 
 	// Set inputs
 	fb.setVariable("dx", dx);
@@ -50,6 +56,22 @@ public class Fuzzy {
         this.velocidade = fb.getVariable("Velocidade").getValue();
         this.angulo = fb.getVariable("Angulo").getValue();
         
+       /* // Show output variable's chart
+        Variable vel = fb.getVariable("Velocidade");
+        JFuzzyChart.get().chart(vel, vel.getDefuzzifier(), true);
+        
+        
+        /*double valorRecebido = fb.getVariable("Velocidade").getUniverseMax();
+        double valorRecebido2 = fb.getVariable("Angulo").getUniverseMax();
+        
+        double valorRecebido3 = fb.getVariable("Velocidade").getUniverseMin();
+        double valorRecebido4 = fb.getVariable("Angulo").getUniverseMin();
+        
+        
+        System.out.println("Universo " + valorRecebido3 + "-" + valorRecebido + "  #  " + valorRecebido4 + "-" + valorRecebido2);*/
+        
+   
+        
 	/*System.out.println("Velocidade: " + this.velocidade +
             " Angulo: " + this.angulo);*/
     }
@@ -62,7 +84,7 @@ public class Fuzzy {
         return this.angulo;
     }
     
-   /* public static void main(String[] args){
+    public static void main(String[] args){
         Fuzzy fuzzy = new Fuzzy();
         fuzzy.calculaVelocidadeEAngulo(20.0, 2.0);
         System.out.println("Velocidade igual a : " + fuzzy.getVelocidade());
@@ -75,6 +97,6 @@ public class Fuzzy {
         
         
         
-    }*/
+    }
     
 }
